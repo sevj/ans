@@ -20,6 +20,7 @@ class AppKernel extends Kernel
         ];
     }
 
+
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__ . '/config/ans.yml');
