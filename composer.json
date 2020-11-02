@@ -1,0 +1,23 @@
+{
+    "name": "adimeo/notifications",
+    "description": "Adimeo Notifications System",
+    "type": "bundle",
+    "authors": [
+        {
+            "name": "Sevj",
+            "email": "sevjeh@sevjeh.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Adimeo\\Notifications\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/http-kernel": "3.1.*"
+    },
+    "require-dev": {
+        "symfony/framework-bundle": "3.1.*",
+        "symfony/yaml": "^5.1"
+    }
+}
