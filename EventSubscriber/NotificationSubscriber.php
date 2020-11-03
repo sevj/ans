@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace Adimeo\Notifications\EventSubscriber;
 
 use Adimeo\Notifications\Event\NotificationEvent;
 use Adimeo\Notifications\Message\Notification\UserNotification;
@@ -32,6 +32,6 @@ final class NotificationSubscriber implements EventSubscriberInterface
 
     public function sendNotification(NotificationEvent $event)
     {
-        $this->bus->dispatch(new UserNotification($event));
+        $this->bus->dispatch(new UserNotification($event->getNotification()));
     }
 }

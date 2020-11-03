@@ -1,6 +1,6 @@
 <?php
 
-namespace Adimeo\Notifications\Manager;
+namespace Adimeo\Notifications\Services;
 
 use Adimeo\Notifications\Entity\AbstractNotification;
 use Adimeo\Notifications\Entity\NotificationInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class NotificationManager
- * @package Adimeo\Notifications\Manager
+ * @package Adimeo\Notifications\Services
  */
 class NotificationManager
 {
@@ -25,15 +25,10 @@ class NotificationManager
         $this->publisher = $publisher;
     }
 
-    public function create(string $fqcn, UserInterface $user, array $content, bool $publish = true)
+    public function create(AbstractNotification $notification, bool $publish = true)
     {
-        /** @var NotificationInterface $notification */
-        $notification = (new $fqcn())
-            ->setUser($user)
-            ->setTarget(get_class($user))
-            ->setDate(new \DateTime())
-            ->setContent($content)
-        ;
+        $notification
+            ->setDate(new \DateTime());
 
         $this->entityManager->persist($notification);
         $this->entityManager->flush();

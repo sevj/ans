@@ -1,0 +1,8 @@
+services:
+  Adimeo\Notifications\Services\NotificationManager:
+  Adimeo\Notifications\EventSubscriber\NotificationSubscriber:
+
+  Adimeo\Notifications\Message\Handler\UserNotificationHandler:
+    tags:
+      name: messenger.message_handler
+      handles: Adimeo\Notifications\Message\Notification\UserNotification

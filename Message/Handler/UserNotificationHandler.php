@@ -2,12 +2,12 @@
 
 namespace Adimeo\Notifications\Message\Handler;
 
-use Adimeo\Notifications\Manager\NotificationManager;
+use Adimeo\Notifications\Services\NotificationManager;
 use Adimeo\Notifications\Message\Notification\UserNotification;
 
 /**
  * Class UserNotificationHandler
- * @package App\Message\Handler
+ * @package Adimeo\Notifications\Message\Handler
  */
 class UserNotificationHandler implements MessageHandlerInterface
 {
@@ -33,6 +33,6 @@ class UserNotificationHandler implements MessageHandlerInterface
     {
         $notification = $message->getNotification();
 
-
+        $this->notificationManager->create($notification);
     }
 }
