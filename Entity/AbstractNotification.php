@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Adimeo\Notifications\Repository\NotificationRepository")
  *
  */
-class Notification
+abstract class AbstractNotification implements NotificationInterface
 {
     const TYPE_DEFAULT = 1;
 
@@ -32,29 +32,58 @@ class Notification
     protected $id;
 
     /**
+     * @var string $targetedEntity
+     *
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $targetedEntity;
+
+    /**
      * @var string $user
+     *
+     * @ORM\Column(type="string", nullable=false)
      */
     protected $user;
 
     /**
      * @var \DateTime $date
+     *
+     * @ORM\Column(type="datetime", nullable=false)
      */
     protected $date;
 
     /**
      * @var int $type
+     *
+     * @ORM\Column(type="integer", nullable=false, options={"default": 1})
      */
     protected $type = self::TYPE_DEFAULT;
 
     /**
      * @var int $state
+     *
+     * @ORM\Column(type="integer", nullable=false, options={"default": 1})
      */
     protected $state = self::STATE_UNREAD;
 
     /**
-     * @var string
+     * @var array
+     *
+     * @ORM\Column(type="json", nullable=false)
      */
     protected $content;
+
+    /**
+     * AbstractNotification constructor.
+     * @param string $target
+     * @param string $user
+     * @param array $content
+     */
+    public function __construct(string $user, array $content)
+    {
+        $this->user     = $user;
+        $this->content  = $content;
+    }
 
     /**
      * @return string
@@ -66,9 +95,9 @@ class Notification
 
     /**
      * @param string $id
-     * @return Notification
+     * @return AbstractNotification
      */
-    public function setId(string $id): Notification
+    public function setId(string $id): AbstractNotification
     {
         $this->id = $id;
         return $this;
@@ -84,7 +113,7 @@ class Notification
 
     /**
      * @param mixed $user
-     * @return Notification
+     * @return AbstractNotification
      */
     public function setUser($user)
     {
@@ -102,9 +131,9 @@ class Notification
 
     /**
      * @param \DateTime $date
-     * @return Notification
+     * @return AbstractNotification
      */
-    public function setDate(\DateTime $date): Notification
+    public function setDate(\DateTime $date): AbstractNotification
     {
         $this->date = $date;
         return $this;
@@ -120,9 +149,9 @@ class Notification
 
     /**
      * @param int $type
-     * @return Notification
+     * @return AbstractNotification
      */
-    public function setType(int $type): Notification
+    public function setType(int $type): AbstractNotification
     {
         $this->type = $type;
         return $this;
@@ -138,27 +167,27 @@ class Notification
 
     /**
      * @param int $state
-     * @return Notification
+     * @return AbstractNotification
      */
-    public function setState(int $state): Notification
+    public function setState(int $state): AbstractNotification
     {
         $this->state = $state;
         return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getContent(): string
+    public function getContent(): array
     {
         return $this->content;
     }
 
     /**
-     * @param string $content
-     * @return Notification
+     * @param array $content
+     * @return AbstractNotification
      */
-    public function setContent(string $content): Notification
+    public function setContent(array $content): AbstractNotification
     {
         $this->content = $content;
         return $this;
