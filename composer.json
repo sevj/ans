@@ -1,7 +1,7 @@
 {
-    "name": "adimeo/notifications",
+    "name": "adimeo/notifications-bundle",
     "description": "Adimeo Notifications System",
-    "type": "bundle",
+    "type": "symfony-bundle",
     "authors": [
         {
             "name": "Sevj",
