@@ -1,6 +1,6 @@
 <?php
 
-namespace Adimeo\BOBundle\DependencyInjection;
+namespace Adimeo\Notifications\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
