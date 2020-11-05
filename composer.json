@@ -26,6 +26,9 @@
     "scripts": {
         "post-install-cmd": [
             "Adimeo\\Notifications\\Install::up"
+        ],
+        "post-update-cmd": [
+        "Adimeo\\Notifications\\Install::up"
         ]
     }
 }
