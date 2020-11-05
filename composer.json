@@ -22,5 +22,10 @@
     "require-dev": {
         "doctrine/orm": "^2.7",
         "symfony/security-bundle": "4.4.*"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Adimeo\\Notifications\\Install::up"
+        ]
     }
 }
