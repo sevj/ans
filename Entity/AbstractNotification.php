@@ -3,16 +3,13 @@
 namespace Adimeo\Notifications\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 //use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class Notification
  * @package Adimeo\Notifications\Entity
- *
- * @ORM\Entity
- * @ORM\Table(name="ans_notifications")
- * @ORM\Entity(repositoryClass="Adimeo\Notifications\Repository\NotificationRepository")
- *
  */
 abstract class AbstractNotification implements NotificationInterface
 {
@@ -30,13 +27,6 @@ abstract class AbstractNotification implements NotificationInterface
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     protected $id;
-
-    /**
-     * @var string $targetedEntity
-     *
-     * @ORM\Column(type="string", nullable=false)
-     */
-    protected $targetedEntity;
 
     /**
      * @var string $user
@@ -79,7 +69,7 @@ abstract class AbstractNotification implements NotificationInterface
      * @param string $user
      * @param array $content
      */
-    public function __construct(string $user, array $content)
+    public function __construct(UserInterface $user, array $content)
     {
         $this->user     = $user;
         $this->content  = $content;
