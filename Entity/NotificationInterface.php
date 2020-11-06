@@ -8,7 +8,13 @@ namespace Adimeo\Notifications\Entity;
  */
 interface NotificationInterface
 {
-    public static function getTargetedEntity(): string;
+    /**
+     * @return string
+     */
+    public function getUserId(): string;
 
-    public function getData(): array;
+    /**
+     * @return string
+     */
+    public static function getTargetedEntity(): string;
 }

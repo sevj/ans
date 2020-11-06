@@ -7,6 +7,7 @@ use Adimeo\Notifications\Entity\NotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Class NotificationManager
@@ -14,25 +15,44 @@ use Symfony\Component\Mercure\Update;
  */
 class NotificationManager
 {
+    /** @var PublisherInterface  */
     protected $publisher;
+
+    /** @var EntityManagerInterface  */
     protected $entityManager;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /**
+     * NotificationManager constructor.
+     * @param PublisherInterface $publisher
+     * @param EntityManagerInterface $entityManager
+     * @param NormalizerInterface $normalizer
+     */
     public function __construct(
         PublisherInterface $publisher,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        NormalizerInterface $normalizer
     ) {
         $this->entityManager = $entityManager;
         $this->publisher = $publisher;
+        $this->normalizer = $normalizer;
     }
 
+    /**
+     * @param NotificationInterface $notification
+     * @param bool $publish
+     * @return NotificationInterface
+     * @throws \Exception
+     */
     public function create(NotificationInterface $notification, bool $publish = true)
     {
         $notification
             ->setDate(new \DateTime())
         ;
 
-        $user = $notification->getUser();
-        $user = $this->entityManager->find($notification::getTargetedEntity(), $user->getId());
+        $user = $this->entityManager->find($notification::getTargetedEntity(), $notification->getUserId());
         $notification->setUser($user);
 
         $this->entityManager->persist($notification);
@@ -87,7 +107,7 @@ class NotificationManager
     {
         $update = new Update(
             $this->buildUpdateTopic($notification),
-            json_encode($notification->getContent())
+            $this->buildContent($notification)
         );
 
         $this->publisher->__invoke($update);
@@ -109,5 +129,19 @@ class NotificationManager
             get_class($notification),
             $notification->getUser()->getId()
         );
+    }
+
+    /**
+     * @param NotificationInterface $notification
+     * @return string
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    protected function buildContent(NotificationInterface $notification): string
+    {
+        return json_encode([
+            'notification' => $this->normalizer->normalize($notification, null, [
+                'groups' => ['notification'],
+            ])
+        ]);
     }
 }

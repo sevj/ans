@@ -5,7 +5,7 @@ namespace Adimeo\Notifications\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-//use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class Notification
@@ -25,6 +25,8 @@ abstract class AbstractNotification implements NotificationInterface
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     *
+     * @Groups({"notification"})
      */
     protected $id;
 
@@ -32,6 +34,8 @@ abstract class AbstractNotification implements NotificationInterface
      * @var string $user
      *
      * @ORM\Column(type="string", nullable=false)
+     *
+     * @Groups({"notification"})
      */
     protected $user;
 
@@ -39,6 +43,8 @@ abstract class AbstractNotification implements NotificationInterface
      * @var \DateTime $date
      *
      * @ORM\Column(type="datetime", nullable=false)
+     *
+     * @Groups({"notification"})
      */
     protected $date;
 
@@ -46,6 +52,8 @@ abstract class AbstractNotification implements NotificationInterface
      * @var int $type
      *
      * @ORM\Column(type="integer", nullable=false, options={"default": 1})
+     *
+     * @Groups({"notification"})
      */
     protected $type = self::TYPE_DEFAULT;
 
@@ -53,6 +61,8 @@ abstract class AbstractNotification implements NotificationInterface
      * @var int $state
      *
      * @ORM\Column(type="integer", nullable=false, options={"default": 1})
+     *
+     * @Groups({"notification"})
      */
     protected $state = self::STATE_UNREAD;
 
@@ -60,6 +70,8 @@ abstract class AbstractNotification implements NotificationInterface
      * @var array
      *
      * @ORM\Column(type="json", nullable=false)
+     *
+     * @Groups({"notification"})
      */
     protected $content;
 
@@ -180,13 +192,5 @@ abstract class AbstractNotification implements NotificationInterface
     {
         $this->content = $content;
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData(): array
-    {
-        return $this->content;
     }
 }
