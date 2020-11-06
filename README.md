@@ -13,6 +13,20 @@ MESSENGER_TRANSPORT_DSN_MAILER=amqp://guest:guest@127.0.0.1:5672/%2f/mails
 MESSENGER_TRANSPORT_DSN=amqp://guest:guest@127.0.0.1:5672/%2f/default
 `
 
+* editez le fichier `config/packages/messenger` et ajoutez 
+`
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        # failure_transport: failed
+
+        transports:
+            amqp_default: '%env(MESSENGER_TRANSPORT_DSN)%'
+
+        routing:
+            'Adimeo\Notifications\Message\NotificationMessageInterface': amqp_default
+`
+
 ## Utilisation
 - Créez la(es) entité(s) de notification qui implémentent l'interface `Adimeo\Notifications\NotificationInterface` et étendent la classe abstraite `Adimeo\Notifications\AbstractNotification`.
 `
@@ -71,3 +85,13 @@ $limit : le nombre de notifications
 $orderBy : un tableau sous le modèle doctrine pour l'ordre, par défaut date décroissante de création
 $filters : un tableau de filtres sous le modèle doctrine 
 
+- Pour lire une notif, utilisez la méthode `Adimeo\Services\NotificationManager->read()` :
+`
+$notifications = $this->notificationManager->read(
+    $fqcn,
+    $id
+);
+`
+
+$fqcn : le fqcn de l'entité de notification, dans notre exemple `UserNotification::class`
+$id : l'id de l'utilisateur

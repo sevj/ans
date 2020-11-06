@@ -3,7 +3,6 @@
 namespace Adimeo\Notifications\Message\Notification;
 
 use Adimeo\Notifications\Entity\AbstractNotification;
-use Adimeo\Notifications\Entity\NotificationInterface;
 use Adimeo\Notifications\Message\NotificationMessageInterface;
 
 /**
