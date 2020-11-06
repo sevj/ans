@@ -65,8 +65,7 @@ abstract class AbstractNotification implements NotificationInterface
 
     /**
      * AbstractNotification constructor.
-     * @param string $target
-     * @param string $user
+     * @param UserInterface $user
      * @param array $content
      */
     public function __construct(UserInterface $user, array $content)
@@ -94,7 +93,7 @@ abstract class AbstractNotification implements NotificationInterface
     }
 
     /**
-     * @return mixed
+     * @return UserInterface
      */
     public function getUser()
     {
@@ -181,5 +180,13 @@ abstract class AbstractNotification implements NotificationInterface
     {
         $this->content = $content;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->content;
     }
 }

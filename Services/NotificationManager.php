@@ -5,6 +5,7 @@ namespace Adimeo\Notifications\Services;
 use Adimeo\Notifications\Entity\NotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 
 /**
  * Class NotificationManager
@@ -63,8 +64,31 @@ class NotificationManager
         ], $orderBy, $limit, ($page - 1) * $limit);
     }
 
+    /**
+     * @param NotificationInterface $notification
+     */
     public function publish(NotificationInterface $notification)
     {
+        $update = new Update(
+            $this->buildUpdateTopic($notification),
+            json_encode($notification->getContent())
+        );
 
+        $this->publisher->__invoke($update);
+    }
+
+    private function buildUpdateTopic(NotificationInterface $notification): string
+    {
+        $id = $notification->getId();
+        if (null === $id) {
+            throw new \InvalidArgumentException();
+        }
+
+        return sprintf(
+            '%s/%s/notification/%s',
+            get_class($notification),
+            $notification->getUser()->getId(),
+            $id
+        );
     }
 }

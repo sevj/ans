@@ -14,14 +14,17 @@ class UserNotification implements NotificationMessageInterface
 {
     /** @var AbstractNotification */
     protected $notification;
+    protected $publish;
 
     /**
-     * UserDocumentNotification constructor.
+     * UserNotification constructor.
      * @param AbstractNotification $notification
+     * @param bool $publish
      */
-    public function __construct(AbstractNotification $notification)
+    public function __construct(AbstractNotification $notification, $publish = true)
     {
         $this->notification = $notification;
+        $this->publish = $publish;
     }
 
     /**
@@ -32,5 +35,8 @@ class UserNotification implements NotificationMessageInterface
         return $this->notification;
     }
 
-
+    public function toPublish()
+    {
+        return $this->publish;
+    }
 }

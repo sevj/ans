@@ -11,10 +11,12 @@ use Adimeo\Notifications\Entity\AbstractNotification;
 class NotificationEvent
 {
     protected $notification;
+    protected $publish;
 
-    public function __construct(AbstractNotification $notification)
+    public function __construct(AbstractNotification $notification, $publish = true)
     {
         $this->notification = $notification;
+        $this->publish = $publish;
     }
 
     /**
@@ -23,5 +25,10 @@ class NotificationEvent
     public function getNotification(): AbstractNotification
     {
         return $this->notification;
+    }
+
+    public function toPublish()
+    {
+        return $this->publish;
     }
 }

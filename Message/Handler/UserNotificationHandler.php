@@ -33,6 +33,6 @@ class UserNotificationHandler implements MessageHandlerInterface
     {
         $notification = $message->getNotification();
 
-        $this->notificationManager->create($notification);
+        $this->notificationManager->create($notification, $message->toPublish());
     }
 }
