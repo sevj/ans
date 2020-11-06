@@ -105,7 +105,7 @@ class NotificationManager
         }
 
         return sprintf(
-            'notifications/%s/%s/notification',
+            'notifications-%s-%s',
             get_class($notification),
             $notification->getUser()->getId()
         );

@@ -1,5 +1,13 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
   Adimeo\Notifications\Services\NotificationManager:
+    arguments:
+      $publisher: '@mercure.hub.default.publisher'
+      $entityManager: '@doctrine.orm.entity_manager'
+
   Adimeo\Notifications\EventSubscriber\NotificationSubscriber:
 
   Adimeo\Notifications\Message\Handler\UserNotificationHandler:
