@@ -102,6 +102,7 @@ class NotificationManager
 
     /**
      * @param NotificationInterface $notification
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function publish(NotificationInterface $notification)
     {

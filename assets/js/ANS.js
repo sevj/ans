@@ -24,3 +24,5 @@ class ANS {
     eventSource.onmessage = e => this.callback(e); // do something with the payload
   }
 }
+
+export default ANS;

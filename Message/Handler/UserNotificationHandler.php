@@ -28,6 +28,7 @@ class UserNotificationHandler implements MessageHandlerInterface
 
     /**
      * @param UserNotification $message
+     * @throws \Exception
      */
     public function __invoke(UserNotification $message)
     {

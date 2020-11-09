@@ -5,15 +5,15 @@ namespace Adimeo\Notifications\Event;
 use Adimeo\Notifications\Entity\AbstractNotification;
 
 /**
- * Class NotificationEvent
+ * Class DirectNotificationEvent
  * @package Adimeo\Notifications\Event
  */
-class NotificationEvent
+class DirectNotificationEvent
 {
     protected $notification;
     protected $publish;
 
-    public function __construct(AbstractNotification $notification, $publish = false)
+    public function __construct(AbstractNotification $notification, $publish = true)
     {
         $this->notification = $notification;
         $this->publish = $publish;
