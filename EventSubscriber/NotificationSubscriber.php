@@ -2,6 +2,7 @@
 
 namespace Adimeo\Notifications\EventSubscriber;
 
+use Adimeo\Notifications\Event\DirectNotificationEvent;
 use Adimeo\Notifications\Event\NotificationEvent;
 use Adimeo\Notifications\Message\Notification\UserNotification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,10 +28,18 @@ final class NotificationSubscriber implements EventSubscriberInterface
             NotificationEvent::class => [
                 ['sendNotification'],
             ],
+            DirectNotificationEvent::class => [
+                ['sendDirectNotification']
+            ]
         ];
     }
 
     public function sendNotification(NotificationEvent $event)
+    {
+        $this->bus->dispatch(new UserNotification($event->getNotification(), false));
+    }
+
+    public function sendDirectNotification(DirectNotificationEvent $event)
     {
         $this->bus->dispatch(new UserNotification($event->getNotification(), $event->toPublish()));
     }
