@@ -96,9 +96,9 @@ abstract class AbstractBaseNotification implements NotificationInterface
 
     /**
      * @param string $id
-     * @return AbstractBasicNotification
+     * @return AbstractBaseNotification
      */
-    public function setId(string $id): AbstractBasicNotification
+    public function setId(string $id): AbstractBaseNotification
     {
         $this->id = $id;
         return $this;
@@ -114,7 +114,7 @@ abstract class AbstractBaseNotification implements NotificationInterface
 
     /**
      * @param mixed $user
-     * @return AbstractBasicNotification
+     * @return AbstractBaseNotification
      */
     public function setUser($user)
     {
@@ -132,9 +132,9 @@ abstract class AbstractBaseNotification implements NotificationInterface
 
     /**
      * @param \DateTime $date
-     * @return AbstractBasicNotification
+     * @return AbstractBaseNotification
      */
-    public function setDate(\DateTime $date): AbstractBasicNotification
+    public function setDate(\DateTime $date): AbstractBaseNotification
     {
         $this->date = $date;
         return $this;
@@ -150,9 +150,9 @@ abstract class AbstractBaseNotification implements NotificationInterface
 
     /**
      * @param int $type
-     * @return AbstractBasicNotification
+     * @return AbstractBaseNotification
      */
-    public function setType(int $type): AbstractBasicNotification
+    public function setType(int $type): AbstractBaseNotification
     {
         $this->type = $type;
         return $this;
@@ -168,9 +168,9 @@ abstract class AbstractBaseNotification implements NotificationInterface
 
     /**
      * @param int $state
-     * @return AbstractBasicNotification
+     * @return AbstractBaseNotification
      */
-    public function setState(int $state): AbstractBasicNotification
+    public function setState(int $state): AbstractBaseNotification
     {
         $this->state = $state;
         return $this;
@@ -186,9 +186,9 @@ abstract class AbstractBaseNotification implements NotificationInterface
 
     /**
      * @param array $content
-     * @return AbstractBasicNotification
+     * @return AbstractBaseNotification
      */
-    public function setContent(array $content): AbstractBasicNotification
+    public function setContent(array $content): AbstractBaseNotification
     {
         $this->content = $content;
         return $this;
