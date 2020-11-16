@@ -2,8 +2,9 @@
 
 namespace Adimeo\Notifications\Services;
 
-use Adimeo\Notifications\Entity\AbstractNotification;
-use Adimeo\Notifications\Entity\NotificationInterface;
+use Adimeo\Notifications\Entity\AbstractBaseNotification;
+use Adimeo\Notifications\Entity\BaseNotificationInterface;
+use Adimeo\Notifications\Entity\DirectNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
@@ -41,12 +42,11 @@ class NotificationManager
     }
 
     /**
-     * @param NotificationInterface $notification
-     * @param bool $publish
-     * @return NotificationInterface
-     * @throws \Exception
+     * @param BaseNotificationInterface $notification
+     * @return BaseNotificationInterface
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public function create(NotificationInterface $notification, bool $publish = true)
+    public function create(BaseNotificationInterface $notification)
     {
         $notification
             ->setDate(new \DateTime())
@@ -58,7 +58,7 @@ class NotificationManager
         $this->entityManager->persist($notification);
         $this->entityManager->flush();
 
-        if ($publish) {
+        if ($notification instanceof DirectNotificationInterface && $notification->toPublish()) {
             $this->publish($notification);
         }
 
@@ -88,23 +88,58 @@ class NotificationManager
     /**
      * @param string $entity
      * @param string $id
+     * @return bool
      */
-    public function read(string $entity, string $id)
+    public function hasUnread(
+        string $entity,
+        string $id
+    ) {
+        return count($this->entityManager->getRepository($entity)->findBy([
+                'user' => $id,
+                'state' => AbstractBaseNotification::STATE_UNREAD
+            ])) > 0;
+    }
+
+    /**
+     * @param string $entity
+     * @param string $id
+     */
+    public function read(string $entity, string $id): void
     {
-        /** @var AbstractNotification $notification */
+        /** @var AbstractBaseNotification $notification */
         $notification = $this->entityManager->getRepository($entity)->find($id);
 
-        $notification->setState(AbstractNotification::STATE_READ);
+        $notification->setState(AbstractBaseNotification::STATE_READ);
 
         $this->entityManager->persist($notification);
         $this->entityManager->flush();
     }
 
     /**
-     * @param NotificationInterface $notification
+     * @param string $entity
+     * @param string $id
+     */
+    public function readAllUserNotifications(string $entity, string $id): void
+    {
+        $notifications = $this->entityManager->getRepository($entity)->findBy([
+            'user' => $id,
+            'state' => AbstractBaseNotification::STATE_UNREAD
+        ]);
+
+        /** @var AbstractBaseNotification $notification */
+        foreach ($notifications as $notification) {
+            $notification->setState(AbstractBaseNotification::STATE_READ);
+            $this->entityManager->persist($notification);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param DirectNotificationInterface $notification
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public function publish(NotificationInterface $notification)
+    public function publish(DirectNotificationInterface $notification)
     {
         $update = new Update(
             $this->buildUpdateTopic($notification),
@@ -115,10 +150,10 @@ class NotificationManager
     }
 
     /**
-     * @param NotificationInterface $notification
+     * @param DirectNotificationInterface $notification
      * @return string
      */
-    protected function buildUpdateTopic(NotificationInterface $notification): string
+    protected function buildUpdateTopic(DirectNotificationInterface $notification): string
     {
         $id = $notification->getId();
         if (null === $id) {
@@ -133,11 +168,11 @@ class NotificationManager
     }
 
     /**
-     * @param NotificationInterface $notification
+     * @param DirectNotificationInterface $notification
      * @return string
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    protected function buildContent(NotificationInterface $notification): string
+    protected function buildContent(DirectNotificationInterface $notification): string
     {
         return json_encode([
             'notification' => $this->normalizer->normalize($notification, null, [

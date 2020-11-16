@@ -36,11 +36,11 @@ final class NotificationSubscriber implements EventSubscriberInterface
 
     public function sendNotification(NotificationEvent $event)
     {
-        $this->bus->dispatch(new UserNotification($event->getNotification(), false));
+        $this->bus->dispatch(new UserNotification($event->getNotification()));
     }
 
     public function sendDirectNotification(DirectNotificationEvent $event)
     {
-        $this->bus->dispatch(new UserNotification($event->getNotification(), $event->toPublish()));
+        $this->bus->dispatch(new UserNotification($event->getNotification()));
     }
 }

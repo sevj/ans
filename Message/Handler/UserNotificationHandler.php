@@ -28,12 +28,12 @@ class UserNotificationHandler implements MessageHandlerInterface
 
     /**
      * @param UserNotification $message
-     * @throws \Exception
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function __invoke(UserNotification $message)
     {
         $notification = $message->getNotification();
 
-        $this->notificationManager->create($notification, $message->toPublish());
+        $this->notificationManager->create($notification);
     }
 }

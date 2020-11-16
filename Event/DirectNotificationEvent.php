@@ -2,7 +2,7 @@
 
 namespace Adimeo\Notifications\Event;
 
-use Adimeo\Notifications\Entity\AbstractNotification;
+use Adimeo\Notifications\Entity\DirectNotificationInterface;
 
 /**
  * Class DirectNotificationEvent
@@ -13,16 +13,16 @@ class DirectNotificationEvent
     protected $notification;
     protected $publish;
 
-    public function __construct(AbstractNotification $notification, $publish = true)
+    public function __construct(DirectNotificationInterface $notification, $publish = true)
     {
         $this->notification = $notification;
         $this->publish = $publish;
     }
 
     /**
-     * @return AbstractNotification
+     * @return DirectNotificationInterface
      */
-    public function getNotification(): AbstractNotification
+    public function getNotification(): DirectNotificationInterface
     {
         return $this->notification;
     }

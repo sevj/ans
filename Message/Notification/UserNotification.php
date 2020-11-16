@@ -2,7 +2,8 @@
 
 namespace Adimeo\Notifications\Message\Notification;
 
-use Adimeo\Notifications\Entity\AbstractNotification;
+use Adimeo\Notifications\Entity\AbstractBasicNotification;
+use Adimeo\Notifications\Entity\BaseNotificationInterface;
 use Adimeo\Notifications\Message\NotificationMessageInterface;
 
 /**
@@ -11,25 +12,25 @@ use Adimeo\Notifications\Message\NotificationMessageInterface;
  */
 class UserNotification implements NotificationMessageInterface
 {
-    /** @var AbstractNotification */
+    /** @var BaseNotificationInterface */
     protected $notification;
     protected $publish;
 
     /**
      * UserNotification constructor.
-     * @param AbstractNotification $notification
+     * @param BaseNotificationInterface $notification
      * @param bool $publish
      */
-    public function __construct(AbstractNotification $notification, $publish = true)
+    public function __construct(BaseNotificationInterface $notification, $publish = true)
     {
         $this->notification = $notification;
         $this->publish = $publish;
     }
 
     /**
-     * @return AbstractNotification
+     * @return BaseNotificationInterface
      */
-    public function getNotification(): AbstractNotification
+    public function getNotification(): BaseNotificationInterface
     {
         return $this->notification;
     }
