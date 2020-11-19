@@ -116,6 +116,15 @@ class NotificationManager
     }
 
     /**
+     * @param BaseNotificationInterface $notification
+     */
+    public function remove(BaseNotificationInterface $notification)
+    {
+        $this->entityManager->remove($notification);
+        $this->entityManager->flush();
+    }
+
+    /**
      * @param string $entity
      * @param string $id
      */
